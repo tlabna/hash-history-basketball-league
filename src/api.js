@@ -2,54 +2,57 @@ import {
   teams,
   players,
   generateArticle,
-  generateTeamsArticles
+  generateTeamsArticles,
 } from './dummy-data'
 
 let cachedPlayers = null
 let cachedTeams = {}
 let cachedTeamNames = null
 
-export function getPlayers (teamId) {
-  return new Promise((res) => {
+export function getPlayers(teamId) {
+  return new Promise((resolve) => {
     if (cachedPlayers === null) {
       cachedPlayers = players
-      return setTimeout(() => res(teamId ? teams[teamId].players : cachedPlayers), 800)
+      return setTimeout(
+        () => resolve(teamId ? teams[teamId].players : cachedPlayers),
+        800
+      )
     }
 
-    return res(teamId ? teams[teamId].players : cachedPlayers)
+    return resolve(teamId ? teams[teamId].players : cachedPlayers)
   })
 }
 
-export function getTeam (teamId) {
-  return new Promise((res) => {
+export function getTeam(teamId) {
+  return new Promise((resolve) => {
     if (typeof cachedTeams[teamId] === 'undefined') {
       cachedTeams[teamId] = teams[teamId]
-      return setTimeout(() => res(cachedTeams[teamId]), 800)
+      return setTimeout(() => resolve(cachedTeams[teamId]), 800)
     }
 
-    return res(cachedTeams[teamId])
+    return resolve(cachedTeams[teamId])
   })
 }
 
-export function getTeamNames () {
-  return new Promise((res) => {
+export function getTeamNames() {
+  return new Promise((resolve) => {
     if (cachedTeamNames === null) {
       cachedTeamNames = Object.keys(teams)
-      return setTimeout(() => res(cachedTeamNames), 400)
+      return setTimeout(() => resolve(cachedTeamNames), 400)
     }
 
-    return res(cachedTeamNames)
+    return resolve(cachedTeamNames)
   })
 }
 
-export function getArticle (teamId, id) {
-  return new Promise((res) => {
-    setTimeout(() => res(generateArticle(teamId, id)), 700)
+export function getArticle(teamId, id) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(generateArticle(teamId, id)), 700)
   })
 }
 
-export function getTeamsArticles (teamId) {
-  return new Promise((res) => {
-    setTimeout(() => res(generateTeamsArticles(teamId)), 700)
+export function getTeamsArticles(teamId) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(generateTeamsArticles(teamId)), 700)
   })
 }

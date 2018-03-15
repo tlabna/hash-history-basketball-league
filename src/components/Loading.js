@@ -3,36 +3,34 @@ import PropTypes from 'prop-types'
 
 export default class Loading extends Component {
   static propTypes = {
-    text: PropTypes.string.isRequired
+    text: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
-    text: 'Loading'
+    text: 'Loading',
   }
 
   state = {
-    text: this.props.text
+    text: this.props.text,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const stopper = this.props.text + '...'
     this.interval = setInterval(() => {
       this.state.text === stopper
-        ? this.setState(() => ({text: this.props.text}))
-        : this.setState(({ text }) => ({text: text + '.'}))
+        ? this.setState(() => ({ text: this.props.text }))
+        : this.setState(({ text }) => ({ text: text + '.' }))
     }, 300)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.clearInterval(this.interval)
   }
 
-  render () {
+  render() {
     return (
-      <div className='container'>
-        <p className='text-center'>
-          {this.state.text}
-        </p>
+      <div className="container">
+        <p className="text-center">{this.state.text}</p>
       </div>
     )
   }

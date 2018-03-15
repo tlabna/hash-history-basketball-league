@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Sidebar from './Sidebar'
 import { getTeamNames } from '../api'
 import { Route, Link } from 'react-router-dom'
@@ -6,22 +7,24 @@ import TeamLogo from './TeamLogo'
 import Team from './Team'
 import Loading from './Loading'
 
-
 export default class Teams extends Component {
-  state = {
-    teamNames: [],
-    loading: true
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
   }
 
-  componentDidMount () {
-    getTeamNames()
-      .then((teamNames) => {
-        this.setState(() => ({
-          loading: false,
-          teamNames
-        }))
-      })
+  state = {
+    teamNames: [],
+    loading: true,
+  }
 
+  componentDidMount() {
+    getTeamNames().then((teamNames) => {
+      this.setState(() => ({
+        loading: false,
+        teamNames,
+      }))
+    })
   }
 
   render() {
@@ -29,41 +32,56 @@ export default class Teams extends Component {
     const { location, match } = this.props
 
     return (
-      <div className='container two-column'>
+      <div className="container two-column">
         <Sidebar
           loading={loading}
-          title='Teams'
+          title="Teams"
           list={teamNames}
           {...this.props}
         />
 
-        {loading === false && location.pathname === '/teams'
-          ? <div className='sidebar-instruction'>Select a Team</div>
-          : null}
+        {loading === false && location.pathname === '/teams' ? (
+          <div className="sidebar-instruction">{'Select a Team'}</div>
+        ) : null}
 
-        <Route path={`${match.url}/:teamId`} render={({ match }) => (
-            <div className='panel'>
+        <Route
+          path={`${match.url}/:teamId`}
+          render={({ match }) => (
+            <div className="panel">
               <Team id={match.params.teamId}>
-                {(team) => team === null
-                  ? <Loading />
-                  : <div style={{width: '100%'}}>
-                      <TeamLogo id={team.id} className='center' />
-                      <h1 className='medium-header'>{team.name}</h1>
-                      <ul className='info-list row'>
-                        <li>Established<div>{team.established}</div></li>
-                        <li>Manager<div>{team.manager}</div></li>
-                        <li>Coach<div>{team.coach}</div></li>
+                {(team) =>
+                  team === null ? (
+                    <Loading />
+                  ) : (
+                    <div style={{ width: '100%' }}>
+                      <TeamLogo id={team.id} className="center" />
+                      <h1 className="medium-header">{team.name}</h1>
+                      <ul className="info-list row">
+                        <li>
+                          {'Established'}
+                          <div>{team.established}</div>
+                        </li>
+                        <li>
+                          {'Manager'}
+                          <div>{team.manager}</div>
+                        </li>
+                        <li>
+                          {'Coach'}
+                          <div>{team.coach}</div>
+                        </li>
                       </ul>
                       <Link
-                        className='center btn-main'
-                        to={`/${match.params.teamId}`}
-                      >
-                          {team.name} Team Page
+                        className="center btn-main"
+                        to={`/${match.params.teamId}`}>
+                        {team.name} {'Team Page'}
                       </Link>
-                    </div>}
+                    </div>
+                  )
+                }
               </Team>
             </div>
-        )} />
+          )}
+        />
       </div>
     )
   }

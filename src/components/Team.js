@@ -1,22 +1,22 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types'
-import {  getTeam } from '../api'
+import { getTeam } from '../api'
 
 export default class Team extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    children: PropTypes.func.isRequired
+    children: PropTypes.func.isRequired,
   }
 
   state = {
     team: null,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetchTeam(this.props.id)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.id !== nextProps.id) {
       this.fetchTeam(nextProps.id)
     }
@@ -24,14 +24,13 @@ export default class Team extends Component {
 
   fetchTeam = (id) => {
     this.setState(() => ({
-      team: null
+      team: null,
     }))
 
-    getTeam(id)
-      .then((team) => this.setState(() => ({ team })))
+    getTeam(id).then((team) => this.setState(() => ({ team })))
   }
 
-  render () {
+  render() {
     return this.props.children(this.state.team)
   }
 }
