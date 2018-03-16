@@ -22,3 +22,5 @@ yarn-error.log*
 
 # Other Files
 .sublime-project
+.firebaserc
+firebase.json
